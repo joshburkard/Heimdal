@@ -1,0 +1,9 @@
+{
+  "ModuleName": "Heimdal",
+  "ModuleVersion": "0.1.1",
+  "ModuleDescription": "managing Heimdal Security",
+  "ModuleAuthor": "Josua Burkard",
+  "ModuleCompany": "Josua Burkard",
+  "ModulePrefix": "Heimdal",
+  "LastChange": "initial creation"
+}
