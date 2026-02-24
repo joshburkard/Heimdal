@@ -59,3 +59,54 @@ other functions will be described in the [Help](./Help/README.md) folder
 
 - [`Connect-Heimdal`](./Help/Connect-Heimdal.md) - Connects to the Heimdal API and save the connection settings for other functions
 - [`Get-HeimdalDevice`](./Help/Get-HeimdalDevice.md) - Get Devices from the Heimdal API
+- [`Get-HeimdalLinuxPolicy`](./Help/Get-HeimdalLinuxPolicy.md) - Retrieves Linux policies from Heimdal Security API
+- [`Get-HeimdalOSUpdate`](./Help/Get-HeimdalOSUpdate.md) - Retrieves OS updates from Heimdal Security API
+- [`Get-HeimdalWindowsPolicy`](./Help/Get-HeimdalWindowsPolicy.md) - Retrieves all group policies from Heimdal Security API
+- [`Invoke-HeimdalApiRequest`](./Help/Invoke-HeimdalApiRequest.md) - Helper to invoke Heimdal API requests with 429 retry logic.
+
+## Architecture
+
+The module follows this pattern:
+
+```
+Heimdal/
+├── Code/                                    # Source code
+│   ├── function-template.ps1                # Template for new functions
+│   ├── Private/                             # Internal helper functions
+│   │   └── Invoke-HeimdalApiRequest.ps1     # Core API interaction function
+│   └── Public/                              # Exported module functions
+│       ├── Connect-Heimdal.ps1
+│       ├── Get-HeimdalDevice.ps1
+│       ├── Get-HeimdalCollection.ps1
+│       └── ...                              # Other public functions
+│
+├── CI/                                      # Continuous Integration scripts
+│   ├── Build-Module.ps1                     # Main build script
+│   ├── Create-ModuleDocumentation.ps1       # Documentation generator
+│   └── Module-Settings.json                 # Module metadata
+│
+├── Tests/                                   # Test files
+│   ├── Functions.Tests.ps1                  # Structural tests (BLOCKING)
+│   ├── Module.Tests.ps1                     # Module manifest tests
+│   ├── Test-*.Tests.ps1                     # Functional tests per function
+│   ├── TestHelpers.ps1                      # Shared test utilities
+│   ├── declarations_sample.ps1              # Sample test configuration
+│   └── declarations.ps1                     # Your test configuration (git-ignored)
+│
+├── Help/                                    # Generated markdown documentation
+│   ├── Connect-Heimdal.md
+│   ├── Get-HeimdalDevice.md
+│   └── ...                                  # One file per function
+│
+├── Heimdal/                                 # Built module output
+│   ├── 0.0.13/                              # Version folders
+│   │   ├── Heimdal.psm1                     # Compiled module
+│   │   └── Heimdal.psd1                     # Module manifest
+│   └── ...                                  # Previous versions
+│
+├── Backup/                                  # Backup of previous builds
+├── Examples/                                # Usage examples and scenarios
+├── README.md                                # Main documentation
+├── CHANGELOG.md                             # Version history
+└── LICENSE                                  # MIT License
+```
