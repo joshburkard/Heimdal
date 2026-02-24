@@ -1,4 +1,4 @@
-function Get-HeimdalOSUpdates {
+function Get-HeimdalOSUpdate {
     <#
         .SYNOPSIS
             Retrieves OS updates from Heimdal Security API
@@ -29,7 +29,7 @@ function Get-HeimdalOSUpdates {
             Optional filter to retrieve updates based on their category (e.g., "Security Updates", "Feature Updates", "Definition Updates")
 
         .EXAMPLE
-            Get-HeimdalOSUpdates -StartDate "2024-05-01T00:00:00" -EndDate "2024-06-01T23:59:59" -ClientInfoId "12345"
+            Get-HeimdalOSUpdate -StartDate "2024-05-01T00:00:00" -EndDate "2024-06-01T23:59:59" -ClientInfoId "12345"
             This example retrieves OS updates for the device with clientInfoId "12345" that were reported between May 1, 2024 and June 1, 2024.
     #>
     [CmdletBinding()]

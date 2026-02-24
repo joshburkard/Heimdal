@@ -1,14 +1,14 @@
-function Get-HeimdalLinuxPolicies {
+function Get-HeimdalLinuxPolicy {
     <#
         .SYNOPSIS
-            Retrieves all Linux policies from Heimdal Security API
+            Retrieves Linux policies from Heimdal Security API
 
         .DESCRIPTION
             This function connects to the Heimdal Security API and retrieves a list of all Linux policies.
             The API endpoint is /groupPolicy/getLinuxPolicies and requires customerId.
 
         .EXAMPLE
-            Get-HeimdalLinuxPolicies
+            Get-HeimdalLinuxPolicy
 
         .OUTPUTS
             Returns an array of Linux policy objects from Heimdal

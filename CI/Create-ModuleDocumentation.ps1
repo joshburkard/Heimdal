@@ -14,10 +14,10 @@
     Folder where the Markdown documentation will be created
 
 .EXAMPLE
-    .\modules\DevOps.TCMDB\CI\Create-ModuleDocumentation.ps1 -ModulePath '.\modules\DevOps.TCMDB\Code\Public\' -OutputFolder '.\modules\DevOps.TCMDB\Help\'
+    .\modules\Heimdal\CI\Create-ModuleDocumentation.ps1 -ModulePath '.\modules\Heimdal\Code\Public\' -OutputFolder '.\modules\Heimdal\Help\'
 
 .EXAMPLE
-    .\Scripts\CMDB-Module\CI\Create-ModuleDocumentation.ps1 -ModulePath '.\Scripts\CMDB-Module\Code\Public\' -OutputFolder '.\Scripts\CMDB-Module\Help\' -FunctionName New-CMDBAsset
+    .\Scripts\Heimdal\CI\Create-ModuleDocumentation.ps1 -ModulePath '.\Scripts\Heimdal\Code\Public\' -OutputFolder '.\Scripts\Heimdal\Help\' -FunctionName New-CMDBAsset
 
 .NOTES
     Author: Josua Burkard
@@ -181,7 +181,7 @@ function Get-DynamicParameterDetails {
         $isMandatory = $match.Groups[2].Value.ToLower() -in @('$true', 'true')
 
         # Extract the getter function for this parameter
-        $getterPattern = "(?ms)Name\s*=\s*""$paramName"".*?GetterFunction\s*=\s*""([^"]+)"""
+        $getterPattern = "(?ms)Name\s*=\s*""$paramName"".*?GetterFunction\s*=\s*""([^""]+)"""
         $getterMatch = [regex]::Match($blockText, $getterPattern)
         $getterFunction = if ($getterMatch.Success) { $getterMatch.Groups[1].Value } else { "" }
 

@@ -1,4 +1,4 @@
-function Get-HeimdalWindowsPolicies {
+function Get-HeimdalWindowsPolicy {
     <#
         .SYNOPSIS
             Retrieves all group policies from Heimdal Security API
@@ -8,7 +8,7 @@ function Get-HeimdalWindowsPolicies {
             The API endpoint is /groupPolicy/getWindowsPolicies and requires customerId.
 
         .EXAMPLE
-            Get-HeimdalWindowsPolicies
+            Get-HeimdalWindowsPolicy
 
         .OUTPUTS
             Returns an array of group policy objects from Heimdal

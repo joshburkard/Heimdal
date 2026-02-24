@@ -1,7 +1,7 @@
 function Get-HeimdalDevice {
     <#
         .SYNOPSIS
-            Retrieves all devices from Heimdal Security API
+            Retrieves devices from Heimdal Security API
 
         .DESCRIPTION
             This function retrieves a list of all available devices (active clients) from the Heimdal Security API.
