@@ -24,6 +24,18 @@
     Date: 13/05/2025
     Version: 1.0.4
 #>
+Param(
+    [Parameter(Mandatory = $false)]
+    [string]$ModulePath,
+
+    [Parameter(Mandatory = $false)]
+    [string]$OutputFolder,
+
+    [Parameter(Mandatory = $false)]
+    [string]$FunctionName
+)
+
+# get current file path based on execution context
 
 switch ( $ExecutionContext.Host.Name ) {
     "ConsoleHost" { Write-Verbose "Runbook is executed from PowerShell Console"; if ( [boolean]$MyInvocation.ScriptName ) { if ( ( $MyInvocation.ScriptName ).EndsWith( ".psm1" ) ) { $CurrentFile = [System.IO.FileInfo]$Script:MyInvocation.ScriptName } else { $CurrentFile = [System.IO.FileInfo]$MyInvocation.ScriptName } } elseif ( [boolean]$MyInvocation.MyCommand ) { if ( [boolean]$MyInvocation.MyCommand.Source ) { if ( ( $MyInvocation.MyCommand.Source ).EndsWith( ".psm1" ) ) { $CurrentFile = [System.IO.FileInfo]$MyInvocation.MyCommand.Source } else { $CurrentFile = [System.IO.FileInfo]$MyInvocation.MyCommand.Source } } else { $CurrentFile = [System.IO.FileInfo]$MyInvocation.MyCommand.Path } } }
@@ -31,8 +43,16 @@ switch ( $ExecutionContext.Host.Name ) {
     "Windows PowerShell ISE Host" { Write-Verbose 'Runbook is executed from ISE'; Write-Verbose "  CurrentFile"; $CurrentFile = [System.IO.FileInfo]( $psISE.CurrentFile.FullPath ) }
 }
 
-$ModulePath = Join-Path -Path $CurrentFile.Directory.Parent.FullName -ChildPath "Code"
-$OutputFolder = Join-Path -Path $CurrentFile.Directory.Parent.FullName -ChildPath "Help"
+if ($PSCommandPath) {
+    $CurrentFile = [System.IO.FileInfo]$PSCommandPath
+}
+
+if ( -not [boolean]$ModulePath ) {
+    $ModulePath = Join-Path -Path $CurrentFile.Directory.Parent.FullName -ChildPath "Code"
+}
+if ( -not [boolean]$OutputFolder ) {
+    $OutputFolder = Join-Path -Path $CurrentFile.Directory.Parent.FullName -ChildPath "Help"
+}
 
 #region functions
 # Ensure output folder exists
@@ -429,6 +449,7 @@ function New-FunctionMarkdown {
 
     # Add Synopsis
     $contentLines += "## SYNOPSIS"
+    $contentLines += ""
     if ($HelpSections -and $HelpSections.ContainsKey("SYNOPSIS")) {
         $formatted = Format-TextForMarkdown -Text $HelpSections["SYNOPSIS"]
         $contentLines += $formatted
@@ -439,6 +460,7 @@ function New-FunctionMarkdown {
 
     # Add Description - strip out parameter lists from description
     $contentLines += "## DESCRIPTION"
+    $contentLines += ""
     if ($HelpSections -and $HelpSections.ContainsKey("DESCRIPTION")) {
         $descriptionText = Get-DescriptionText -DescriptionText $HelpSections["DESCRIPTION"]
         $formatted = Format-TextForMarkdown -Text $descriptionText
@@ -476,6 +498,7 @@ function New-FunctionMarkdown {
 
         foreach ($parameter in $parameters) {
             $contentLines += "### $($parameter.Name)"
+            $contentLines += ""
 
             # Parameter description
             if ($parameter.Description.Text -is [array]) {
@@ -501,6 +524,7 @@ function New-FunctionMarkdown {
     if ($DynamicParameters -and $DynamicParameters.Count -gt 0) {
         foreach ($dynamicParam in $DynamicParameters) {
             $contentLines += "### $($dynamicParam.Name)"
+            $contentLines += ""
             $contentLines += $dynamicParam.Description
             $contentLines += ""
             $contentLines += "- Type: String"
@@ -525,9 +549,10 @@ function New-FunctionMarkdown {
         $contentLines += "## EXAMPLES"
         $contentLines += ""
 
-        foreach ($exampleKey in ( $HelpSections.Keys | Where-Object { $_ -match 'EXAMPLE' } ) ) {
+        foreach ($exampleKey in ( $HelpSections.Keys | Where-Object { $_ -match 'EXAMPLE' } | Sort-Object ) ) {
             $exampleNumber = [int]( $exampleKey.Split('-')[1] )
             $contentLines += "### Example $($exampleNumber + 1)"
+            $contentLines += ""
 
             # Use six backticks to ensure markdown doesn't interpret any content inside
             $contentLines += "``````powershell"
@@ -563,6 +588,7 @@ function New-FunctionMarkdown {
         $exampleIndex = 1
         foreach ($example in $examples) {
             $contentLines += "### Example $exampleIndex"
+            $contentLines += ""
 
             # Use six backticks to ensure markdown doesn't interpret any content inside
             $contentLines += "``````powershell"
@@ -594,12 +620,14 @@ function New-FunctionMarkdown {
     # Add notes if available
     if ($HelpSections -and $HelpSections.ContainsKey("NOTES")) {
         $contentLines += "## NOTES"
+        $contentLines += ""
         $formatted = Format-TextForMarkdown -Text $HelpSections["NOTES"]
         $contentLines += $formatted
         $contentLines += ""
     }
     elseif ($Help.AlertSet -and $Help.AlertSet.Alert) {
         $contentLines += "## NOTES"
+        $contentLines += ""
 
         if ($Help.AlertSet.Alert.Text -is [array]) {
             $contentLines += $Help.AlertSet.Alert.Text
@@ -833,5 +861,7 @@ try {
 }
 catch {
     Write-Error "An error occurred: $_"
+    write-error "Documentation generation failed."
+    write-error "error happened in line: $($_.InvocationInfo.Line)"
     exit 1
 }

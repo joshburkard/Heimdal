@@ -1,15 +1,18 @@
 # Invoke-HeimdalApiRequest
 
 ## SYNOPSIS
+
 Helper to invoke Heimdal API requests with 429 retry logic.
 
 ## DESCRIPTION
+
 Invokes a web request to the Heimdal API, handling 429 Too Many Requests responses by waiting and retrying.
 Retries up to a maximum number of attempts, with exponential backoff.
 
 ## PARAMETERS
 
 ### Uri
+
 The URI to request.
 
 - Type: String
@@ -18,6 +21,7 @@ The URI to request.
 - Accept wildcard characters: false
 
 ### Method
+
 The HTTP method (GET, POST, etc). Defaults to GET.
 
 - Type: String
@@ -27,6 +31,7 @@ The HTTP method (GET, POST, etc). Defaults to GET.
 - Accept wildcard characters: false
 
 ### Headers
+
 Hashtable of headers to include.
 
 - Type: Hashtable
@@ -35,6 +40,7 @@ Hashtable of headers to include.
 - Accept wildcard characters: false
 
 ### Body
+
 Optional body for POST/PUT requests.
 
 - Type: Object
@@ -43,6 +49,7 @@ Optional body for POST/PUT requests.
 - Accept wildcard characters: false
 
 ### MaxRetries
+
 Maximum number of retries for 429 responses. Default: 5.
 
 - Type: Int32
@@ -52,6 +59,7 @@ Maximum number of retries for 429 responses. Default: 5.
 - Accept wildcard characters: false
 
 ### InitialDelaySeconds
+
 Initial delay in seconds before retrying after 429. Default: 60.
 
 - Type: Int32
@@ -63,6 +71,7 @@ Initial delay in seconds before retrying after 429. Default: 60.
 ## EXAMPLES
 
 ### Example 1
+
 ```powershell
 $headers = @{ "Authorization" = "Bearer your_api_key_here" }
             $response = Invoke-HeimdalApiRequest -Uri "https://dashboard.heimdalsecurity.com/api/heimdalapi/2.0/activeclients?customerid=12345&pageSize=10&pageNumber=1" -Method Get -Headers $headers

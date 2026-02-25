@@ -15,7 +15,8 @@ $HeimdalApiKey     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
 # this array is used by the test framework to automatically redact sensitive values from test output and logs
 $SensitiveValues = @(
     $HeimdalApiKey,
-    $HeimdalCustomerId
+    $HeimdalCustomerId,
+    'sample-redact'
 )
 
 #endregion
@@ -33,6 +34,7 @@ $script:TestPollingInterval = 5  # Polling interval in seconds for status checks
 
 
 $script:TestData = @{
+
     # ========================================================================
     # Connect-Heimdal
     # ========================================================================
@@ -44,8 +46,8 @@ $script:TestData = @{
         }
         Invalid = @{
             ApiURL = $HeimdalApiUrl
-            CustomerID = 'WrongCustomerID'
-            ApiKey = 'WrongApiKey'
+            CustomerID = 'SampleWrongCustomerID'
+            ApiKey = 'SampleWrongApiKey'
         }
     }
 
@@ -54,14 +56,65 @@ $script:TestData = @{
     # ========================================================================
     'Get-HeimdalDevice' = @{
         ByName = @{
-            Name = "TestDeviceName"
+            Name = "SampleDeviceName"
         }
         ByWrongName = @{
             Name = "NonExistentDeviceName"
         }
+        ByClientInfoId = @{
+            ClientInfoId = "1234567"
+        }
         ByDate = @{
-            StartDate = (Get-Date).AddDays(-7).ToString("yyyy-MM-ddT00:00:00")
-            EndDate = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ss")
+            StartDate = (Get-Date).AddDays(-7)
+            EndDate = (Get-Date)
+        }
+        ByAllPage = @{
+            GetAllPages = $true
+        }
+        ByPageSize = @{
+            pageSize = 10
+            pageNumber = 1
+        }
+    }
+
+    # ========================================================================
+    # Get-HeimdalWindowsPolicy
+    # ========================================================================
+    'Get-HeimdalWindowsPolicy' = @{
+        ByName = @{
+            Name = "SAMPLE_POLICY"
+        }
+        ById = @{
+            Id = 111111
+        }
+        ByWrongName = @{
+            Name = "NonExistentPolicyName"
+        }
+        ByWrongId = @{
+            Id = 999999
+        }
+    }
+
+    # ========================================================================
+    # Get-HeimdalWindowsOSUpdate
+    # ========================================================================
+    'Get-HeimdalWindowsOSUpdate' = @{
+        WithoutFilters = @{
+        }
+        ByGroupPolicyId = @{
+            GroupPolicyId = 111111
+        }
+        ByWindowsUpdateStatus = @{
+            WindowsUpdateStatus = "SampleStatus"
+        }
+        BySeverity = @{
+            Severity = "SampleSeverity"
+        }
+        ByCategory = @{
+            Category = "SampleCategory"
+        }
+        ByClientInfoId = @{
+            ClientInfoId = "7654321"
         }
     }
 }

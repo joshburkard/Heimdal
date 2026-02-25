@@ -7,8 +7,20 @@ function Get-HeimdalWindowsPolicy {
             This function connects to the Heimdal Security API and retrieves a list of all group policies.
             The API endpoint is /groupPolicy/getWindowsPolicies and requires customerId.
 
+        .PARAMETER id
+            (Optional) The ID of a specific group policy to retrieve. If not provided, all policies will be returned.
+
+        .PARAMETER name
+            (Optional) The name of a specific group policy to retrieve. If not provided, all policies will be returned.
+
         .EXAMPLE
             Get-HeimdalWindowsPolicy
+
+        .EXAMPLE
+            Get-HeimdalWindowsPolicy -Id 123
+
+        .EXAMPLE
+            Get-HeimdalWindowsPolicy -Name "PolicyName"
 
         .OUTPUTS
             Returns an array of group policy objects from Heimdal
@@ -17,6 +29,8 @@ function Get-HeimdalWindowsPolicy {
 
     [CmdletBinding()]
     param (
+        [int]$Id,
+        [string]$Name
     )
     try {
         Write-Verbose "Connecting to Heimdal Security API..."
@@ -25,7 +39,7 @@ function Get-HeimdalWindowsPolicy {
             throw "Not connected to Heimdal API. Please run Connect-Heimdal first."
         }
 
-        $endpoint = "${script:HDSession.ApiURL}/2.0/groupPolicy/getWindowsPolicies?customerId=${script:HDSession.CustomerID}"
+        $endpoint = "$($script:HDSession.ApiURL)/2.0/groupPolicy/getWindowsPolicies?customerId=$($script:HDSession.CustomerID)"
 
         # Set up the headers with API key authentication
         $headers = @{
@@ -34,13 +48,24 @@ function Get-HeimdalWindowsPolicy {
         }
 
         Write-Verbose "Fetching group policies from Heimdal API..."
+        write-Verbose "API Endpoint: $endpoint"
 
         # Make the API call
         $response = Invoke-RestMethod -Uri $endpoint -Method Get -Headers $headers -ErrorAction Stop
 
         if ($response) {
             Write-Verbose "Successfully retrieved group policies from Heimdal"
-            return $response
+
+            $items = $response | Select-Object -ExpandProperty items
+
+            if ($Id) {
+                $items = $items | Where-Object { $_.id -eq $Id }
+            }
+            if ($Name) {
+                $items = $items | Where-Object { $_.name -eq $Name }
+            }
+
+            return @($items)
         }
         else {
             Write-Verbose "No group policies found in Heimdal API response"

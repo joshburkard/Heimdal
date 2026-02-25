@@ -1,15 +1,18 @@
 # Get-HeimdalDevice
 
 ## SYNOPSIS
-Retrieves all devices from Heimdal Security API
+
+Retrieves devices from Heimdal Security API
 
 ## DESCRIPTION
+
 This function retrieves a list of all available devices (active clients) from the Heimdal Security API.
 The API endpoint is /activeclients and requires customerId, date range, and supports pagination.
 
 ## PARAMETERS
 
 ### Name
+
 Filter devices by hostname
 
 - Type: String
@@ -18,6 +21,7 @@ Filter devices by hostname
 - Accept wildcard characters: false
 
 ### ClientInfoId
+
 Filter devices by clientInfoId
 
 - Type: String
@@ -26,6 +30,7 @@ Filter devices by clientInfoId
 - Accept wildcard characters: false
 
 ### StartDate
+
 The start date for filtering
 
 - Type: DateTime
@@ -34,6 +39,7 @@ The start date for filtering
 - Accept wildcard characters: false
 
 ### EndDate
+
 The end date for filtering
 
 - Type: DateTime
@@ -42,6 +48,7 @@ The end date for filtering
 - Accept wildcard characters: false
 
 ### pageSize
+
 Number of results per page (default: 1000)
 
 - Type: Int32
@@ -51,6 +58,7 @@ Number of results per page (default: 1000)
 - Accept wildcard characters: false
 
 ### pageNumber
+
 Page number to retrieve (default: 1)
 
 - Type: Int32
@@ -60,6 +68,7 @@ Page number to retrieve (default: 1)
 - Accept wildcard characters: false
 
 ### GetAllPages
+
 Switch to indicate whether to retrieve all pages of results
 
 - Type: SwitchParameter
@@ -71,6 +80,7 @@ Switch to indicate whether to retrieve all pages of results
 ## EXAMPLES
 
 ### Example 1
+
 ```powershell
 Get-HeimdalDevice -ApiKey "YOUR_API_KEY" -CustomerId "123456" -BaseUrl "https://dashboard.heimdalsecurity.com/api/heimdalapi" -GetAllPages
 ```

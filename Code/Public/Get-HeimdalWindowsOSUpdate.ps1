@@ -1,4 +1,4 @@
-function Get-HeimdalOSUpdate {
+function Get-HeimdalWindowsOSUpdate {
     <#
         .SYNOPSIS
             Retrieves OS updates from Heimdal Security API
@@ -19,6 +19,9 @@ function Get-HeimdalOSUpdate {
         .PARAMETER GroupPolicyId
             Optional filter to retrieve updates for devices under a specific group policy (identified by groupPolicyId)
 
+            This parameter wasn't tested successfully. perhaps the API doesn't support filtering by group policy, or
+            there are no updates associated with the specified group policy in the test environment.
+
         .PARAMETER WindowsUpdateStatus
             Optional filter to retrieve updates based on their Windows Update status (e.g., "Pending", "Installed", "Failed")
 
@@ -29,7 +32,7 @@ function Get-HeimdalOSUpdate {
             Optional filter to retrieve updates based on their category (e.g., "Security Updates", "Feature Updates", "Definition Updates")
 
         .EXAMPLE
-            Get-HeimdalOSUpdate -StartDate "2024-05-01T00:00:00" -EndDate "2024-06-01T23:59:59" -ClientInfoId "12345"
+            Get-HeimdalWindowsOSUpdate -StartDate "2024-05-01T00:00:00" -EndDate "2024-06-01T23:59:59" -ClientInfoId "12345"
             This example retrieves OS updates for the device with clientInfoId "12345" that were reported between May 1, 2024 and June 1, 2024.
     #>
     [CmdletBinding()]
@@ -47,12 +50,15 @@ function Get-HeimdalOSUpdate {
         [string]$GroupPolicyId,
 
         [Parameter(Mandatory = $false)]
+        [ValidateSet("Installed", "Not Installed", "Failed", "Pending")]
         [string]$WindowsUpdateStatus,
 
         [Parameter(Mandatory = $false)]
+        [ValidateSet("Critical", "Important", "Moderate", "Low")]
         [string]$Severity,
 
         [Parameter(Mandatory = $false)]
+        [ValidateSet("Security Updates", "Updates", "Definition Updates", "Feature Updates", "Update Rollups", "Drivers", "Critical Updates", "Service Packs", "Tools", "Other")]
         [string]$Category
     )
     try {
@@ -62,36 +68,38 @@ function Get-HeimdalOSUpdate {
             throw "Not connected to Heimdal API. Please run Connect-Heimdal first."
         }
 
-        # get devices
-        $devices = Get-HeimdalDevices
-
-        $endpoint = "${script:HDSession.ApiURL}/2.0/microsoftUpdates?customerId=${script:HDSession.CustomerID}"
+        $endpoint = "$($script:HDSession.ApiURL)/2.0/microsoftUpdates?customerId=$($script:HDSession.CustomerID)"
 
         # Set default dates if not provided
-        if (-not $StartDate) {
-            $StartDate = (Get-Date).AddDays(-30).ToString("yyyy-MM-ddT00:00:00")
-            $endpoint += "&startDate=$StartDate"
+        if ([boolean]$StartDate) {
+            $StartDateString = (Get-Date -Date $StartDate).ToString("yyyy-MM-ddT00:00:00")
+            $endpoint += "&startDate=$StartDateString"
         }
-        if (-not $EndDate) {
-            $EndDate = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ss")
-            $endpoint += "&endDate=$EndDate"
+        if ([boolean]$EndDate) {
+            $EndDateString = (Get-Date -Date $EndDate).ToString("yyyy-MM-ddTHH:mm:ss")
+            $endpoint += "&endDate=$EndDateString"
         }
 
         # Add optional filters to endpoint
-        if ($ClientInfoId) {
+        if ([boolean]$ClientInfoId) {
             $endpoint += "&clientInfoId=$ClientInfoId"
         }
-        if ($GroupPolicyId) {
+        if ([boolean]$GroupPolicyId) {
             $endpoint += "&groupPolicyId=$GroupPolicyId"
         }
-        if ($WindowsUpdateStatus) {
-            $endpoint += "&windowsUpdateStatus=$WindowsUpdateStatus"
+        if ([boolean]$WindowsUpdateStatus) {
+            $WindowsUpdateStatusString = $WindowsUpdateStatus -replace " ", ""
+            $WindowsUpdateStatusString = $WindowsUpdateStatusString.ToLower()
+            $endpoint += "&windowsUpdateStatus=$WindowsUpdateStatusString"
         }
-        if ($Severity) {
-            $endpoint += "&severity=$Severity"
+        if ([boolean]$Severity) {
+            $SeverityString = $Severity.ToLower()
+            $endpoint += "&severity=$SeverityString"
         }
         if ($Category) {
-            $endpoint += "&category=$Category"
+            $CategoryString = $Category -replace " ", "%20"
+            $CategoryString = $CategoryString.ToLower()
+            $endpoint += "&category=$CategoryString"
         }
 
         Write-Verbose "Fetching OS updates from Heimdal API..."
@@ -103,18 +111,8 @@ function Get-HeimdalOSUpdate {
         }
 
         # Make the API call
-        $response = Invoke-RestMethod -Uri $endpoint -Method Get -Headers $headers -ErrorAction Stop
-
-        # map devices to updates
-        if ($response -and $response.items) {
-            foreach ($update in $response.items) {
-                $device = $devices | Where-Object { $_.id -eq $update.clientInfoId }
-                if ($device) {
-                    $update | Add-Member -MemberType NoteProperty -Name "DeviceHostname" -Value $device.hostname
-                    $update | Add-Member -MemberType NoteProperty -Name "DeviceLastSeen" -Value $device.lastSeen
-                }
-            }
-        }
+        write-Verbose "API Endpoint: $endpoint"
+        $response = Invoke-HeimdalApiRequest -Uri $endpoint -Headers $headers -Method GET
 
         if ($response) {
             Write-Verbose "Successfully retrieved OS updates from Heimdal"
