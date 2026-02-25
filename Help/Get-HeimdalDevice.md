@@ -49,31 +49,21 @@ The end date for filtering
 
 ### pageSize
 
-Number of results per page (default: 1000)
+(Optional) Number of results per page. If not provided, all results will be returned.
 
 - Type: Int32
 - Required: false
-- Default value: 1000
+- Default value: 0
 - Accept pipeline input: false
 - Accept wildcard characters: false
 
 ### pageNumber
 
-Page number to retrieve (default: 1)
+(Optional) Page number to retrieve. If not provided, all results will be returned.
 
 - Type: Int32
 - Required: false
-- Default value: 1
-- Accept pipeline input: false
-- Accept wildcard characters: false
-
-### GetAllPages
-
-Switch to indicate whether to retrieve all pages of results
-
-- Type: SwitchParameter
-- Required: false
-- Default value: False
+- Default value: 0
 - Accept pipeline input: false
 - Accept wildcard characters: false
 
@@ -82,5 +72,5 @@ Switch to indicate whether to retrieve all pages of results
 ### Example 1
 
 ```powershell
-Get-HeimdalDevice -ApiKey "YOUR_API_KEY" -CustomerId "123456" -BaseUrl "https://dashboard.heimdalsecurity.com/api/heimdalapi" -GetAllPages
+Get-HeimdalDevice -ApiKey "YOUR_API_KEY" -CustomerId "123456" -BaseUrl "https://dashboard.heimdalsecurity.com/api/heimdalapi"
 ```

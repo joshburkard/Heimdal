@@ -31,6 +31,12 @@ function Get-HeimdalWindowsOSUpdate {
         .PARAMETER Category
             Optional filter to retrieve updates based on their category (e.g., "Security Updates", "Feature Updates", "Definition Updates")
 
+        .PARAMETER pageSize
+            (Optional) Number of results per page. If not provided, all results will be returned.
+
+        .PARAMETER pageNumber
+            (Optional) Page number to retrieve. If not provided, all results will be returned.
+
         .EXAMPLE
             Get-HeimdalWindowsOSUpdate -StartDate "2024-05-01T00:00:00" -EndDate "2024-06-01T23:59:59" -ClientInfoId "12345"
             This example retrieves OS updates for the device with clientInfoId "12345" that were reported between May 1, 2024 and June 1, 2024.
@@ -60,6 +66,9 @@ function Get-HeimdalWindowsOSUpdate {
         [Parameter(Mandatory = $false)]
         [ValidateSet("Security Updates", "Updates", "Definition Updates", "Feature Updates", "Update Rollups", "Drivers", "Critical Updates", "Service Packs", "Tools", "Other")]
         [string]$Category
+        ,
+        [int]$pageSize,
+        [int]$pageNumber
     )
     try {
         Write-Verbose "Connecting to Heimdal Security API..."
@@ -111,8 +120,14 @@ function Get-HeimdalWindowsOSUpdate {
         }
 
         # Make the API call
-        write-Verbose "API Endpoint: $endpoint"
-        $response = Invoke-HeimdalApiRequest -Uri $endpoint -Headers $headers -Method GET
+        $invokeParams = @{
+            Uri     = $endpoint
+            Headers = $headers
+        }
+        if ($pageSize)   { $invokeParams.Add("pageSize", $pageSize) }
+        if ($pageNumber) { $invokeParams.Add("pageNumber", $pageNumber) }
+
+        $response = Invoke-HeimdalApiRequest @invokeParams
 
         if ($response) {
             Write-Verbose "Successfully retrieved OS updates from Heimdal"

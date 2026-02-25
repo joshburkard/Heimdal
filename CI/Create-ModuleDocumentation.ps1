@@ -48,7 +48,7 @@ if ($PSCommandPath) {
 }
 
 if ( -not [boolean]$ModulePath ) {
-    $ModulePath = Join-Path -Path $CurrentFile.Directory.Parent.FullName -ChildPath "Code"
+    $ModulePath = Join-Path -Path $CurrentFile.Directory.Parent.FullName -ChildPath "Code\Public"
 }
 if ( -not [boolean]$OutputFolder ) {
     $OutputFolder = Join-Path -Path $CurrentFile.Directory.Parent.FullName -ChildPath "Help"

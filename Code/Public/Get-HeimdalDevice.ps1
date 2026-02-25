@@ -20,19 +20,14 @@ function Get-HeimdalDevice {
             The end date for filtering
 
         .PARAMETER pageSize
-            Number of results per page (default: 1000)
+            (Optional) Number of results per page. If not provided, all results will be returned.
 
         .PARAMETER pageNumber
-            Page number to retrieve (default: 1)
-
-        .PARAMETER GetAllPages
-            Switch to indicate whether to retrieve all pages of results
+            (Optional) Page number to retrieve. If not provided, all results will be returned.
 
         .EXAMPLE
-            Get-HeimdalDevice -ApiKey "YOUR_API_KEY" -CustomerId "123456" -BaseUrl "https://dashboard.heimdalsecurity.com/api/heimdalapi" -GetAllPages
+            Get-HeimdalDevice -ApiKey "YOUR_API_KEY" -CustomerId "123456" -BaseUrl "https://dashboard.heimdalsecurity.com/api/heimdalapi"
 
-        .OUTPUTS
-            Returns an array of device objects from Heimdal
     #>
     [CmdletBinding()]
     param (
@@ -42,11 +37,9 @@ function Get-HeimdalDevice {
         [datetime]$StartDate,
 
         [Parameter(Mandatory = $false)]
-        [datetime]$EndDate
-        ,
-        [int]$pageSize = 1000,
-        [int]$pageNumber = 1,
-        [switch]$GetAllPages
+        [datetime]$EndDate,
+        [int]$pageSize,
+        [int]$pageNumber
     )
 
     try {
@@ -85,33 +78,18 @@ function Get-HeimdalDevice {
 
         Write-Verbose "Fetching devices from Heimdal API..."
 
-        if ([boolean]$GetAllPages -or [boolean]$Name) {
-            $pageSize = 1000  # Use maximum page size to minimize number of requests
-            $pageNumber = 1
-            do {
-                Write-Verbose "Requesting page $pageNumber with page size $pageSize..."
-                $URI = "$endpoint&pageSize=$pageSize&pageNumber=$pageNumber"
-                Write-Verbose "Request URI: $URI"
-                $response = Invoke-HeimdalApiRequest -Uri $URI -Method Get -Headers $headers
-
-                if ($response) {
-                    $allDevices += $response.items
-                    Write-Verbose "Retrieved $($response.items.Count) devices from page $pageNumber."
-                }
-
-                $pageNumber++
-            } while ($response.totalCount -gt $allDevices.Count)
+        $invokeParams = @{
+            Uri     = $endpoint
+            Headers = $headers
         }
-        else {
-            # If not fetching all pages, just get the first page
-            Write-Verbose "Requesting first page with page size $pageSize..."
-            $URI = "$endpoint&pageSize=$pageSize&pageNumber=$pageNumber"
-            Write-Verbose "Request URI: $URI"
-            $response = Invoke-HeimdalApiRequest -Uri $URI -Method Get -Headers $headers
-            if ($response) {
-                $allDevices = $response.items
-                Write-Verbose "Retrieved $($response.items.Count) devices from first page."
-            }
+        if ($pageSize)   { $invokeParams.Add("pageSize", $pageSize) }
+        if ($pageNumber) { $invokeParams.Add("pageNumber", $pageNumber) }
+
+        # If neither pageSize nor pageNumber are set, let Invoke-HeimdalApiRequest handle paging (GetAllPages behavior)
+        $response = Invoke-HeimdalApiRequest @invokeParams
+        if ($response) {
+            $allDevices = $response.items
+            Write-Verbose "Retrieved $($response.items.Count) devices."
         }
 
         if ($Name) {

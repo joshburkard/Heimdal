@@ -29,7 +29,7 @@ function Connect-Heimdal {
 
     # Test the connection to the API by making a simple request (e.g., get customer information)
     try {
-        $response = Invoke-HeimdalApiRequest -Uri "$ApiURL/2.0/activeclients?customerid=$CustomerID&pageSize=10&pageNumber=1" -Headers @{ "Authorization" = "Bearer $ApiKey" }
+        $response = Invoke-RestMethod -Uri "$ApiURL/2.0/activeclients?customerid=$CustomerID" -Headers @{ "Authorization" = "Bearer $ApiKey" } -Method Get
 
         if ( [boolean]( $response | get-member -Name "message" -ErrorAction SilentlyContinue ) ) {
             # the response contains a "message" property, which indicates an error (e.g., invalid credentials)

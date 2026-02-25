@@ -1,19 +1,19 @@
-# Get-HeimdalLinuxPolicy
+# Get-HeimdalWindowsThirdParty
 
 ## SYNOPSIS
 
-Retrieves Linux policies from Heimdal Security API
+Retrieves patch information from the Heimdal Security API.
 
 ## DESCRIPTION
 
-This function connects to the Heimdal Security API and retrieves a list of all Linux policies.
-The API endpoint is /groupPolicy/getLinuxPolicies and requires customerId.
+This function connects to the Heimdal Security API and retrieves information about patches.
+You can filter the results by providing a patch ID or patch name.
 
 ## PARAMETERS
 
-### Id
+### ClientInfoId
 
-(Optional) The ID of a specific Linux policy to retrieve. If not provided, all policies will be returned.
+The ID of the client to retrieve third-party patch information for.
 
 - Type: Int32
 - Required: false
@@ -21,9 +21,9 @@ The API endpoint is /groupPolicy/getLinuxPolicies and requires customerId.
 - Accept pipeline input: false
 - Accept wildcard characters: false
 
-### Name
+### Status
 
-(Optional) The name of a specific Linux policy to retrieve. If not provided, all policies will be returned.
+Filter patches by status. Valid values are "latest", "update", "vulnerable", "patched", "uninstalled".
 
 - Type: String
 - Required: false
@@ -55,17 +55,11 @@ The API endpoint is /groupPolicy/getLinuxPolicies and requires customerId.
 ### Example 1
 
 ```powershell
-Get-HeimdalLinuxPolicy
+Get-HeimdalWindowsThirdParty -ClientInfoId 12345
 ```
 
 ### Example 2
 
 ```powershell
-Get-HeimdalLinuxPolicy -Id 123
-```
-
-### Example 3
-
-```powershell
-Get-HeimdalLinuxPolicy -Name "PolicyName"
+Get-HeimdalWindowsThirdParty -Status "vulnerable"
 ```

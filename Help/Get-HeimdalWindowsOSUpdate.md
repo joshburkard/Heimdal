@@ -77,6 +77,26 @@ Optional filter to retrieve updates based on their category (e.g., "Security Upd
 - Accept pipeline input: false
 - Accept wildcard characters: false
 
+### pageSize
+
+(Optional) Number of results per page. If not provided, all results will be returned.
+
+- Type: Int32
+- Required: false
+- Default value: 0
+- Accept pipeline input: false
+- Accept wildcard characters: false
+
+### pageNumber
+
+(Optional) Page number to retrieve. If not provided, all results will be returned.
+
+- Type: Int32
+- Required: false
+- Default value: 0
+- Accept pipeline input: false
+- Accept wildcard characters: false
+
 ## EXAMPLES
 
 ### Example 1

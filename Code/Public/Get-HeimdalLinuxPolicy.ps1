@@ -13,6 +13,12 @@ function Get-HeimdalLinuxPolicy {
         .PARAMETER Name
             (Optional) The name of a specific Linux policy to retrieve. If not provided, all policies will be returned.
 
+        .PARAMETER pageSize
+            (Optional) Number of results per page. If not provided, all results will be returned.
+
+        .PARAMETER pageNumber
+            (Optional) Page number to retrieve. If not provided, all results will be returned.
+
         .EXAMPLE
             Get-HeimdalLinuxPolicy
 
@@ -30,7 +36,9 @@ function Get-HeimdalLinuxPolicy {
     [CmdletBinding()]
     param (
         [int]$Id,
-        [string]$Name
+        [string]$Name,
+        [int]$pageSize,
+        [int]$pageNumber
     )
     try {
         Write-Verbose "Connecting to Heimdal Security API..."
@@ -48,9 +56,16 @@ function Get-HeimdalLinuxPolicy {
         }
 
         Write-Verbose "Fetching Linux policies from Heimdal API..."
-        write-verbose "API Endpoint: $endpoint"
+
         # Make the API call
-        $response = Invoke-RestMethod -Uri $endpoint -Method Get -Headers $headers -ErrorAction Stop
+        $invokeParams = @{
+            Uri     = $endpoint
+            Headers = $headers
+        }
+        if ($pageSize)   { $invokeParams.Add("pageSize", $pageSize) }
+        if ($pageNumber) { $invokeParams.Add("pageNumber", $pageNumber) }
+
+        $response = Invoke-HeimdalApiRequest @invokeParams
 
         if ($response) {
             Write-Verbose "Successfully retrieved Linux policies from Heimdal"

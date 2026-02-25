@@ -13,6 +13,13 @@ function Get-HeimdalWindowsPolicy {
         .PARAMETER name
             (Optional) The name of a specific group policy to retrieve. If not provided, all policies will be returned.
 
+        .PARAMETER pageSize
+            (Optional) Number of results per page. If not provided, all results will be returned.
+
+        .PARAMETER pageNumber
+            (Optional) Page number to retrieve. If not provided, all results will be returned.
+
+
         .EXAMPLE
             Get-HeimdalWindowsPolicy
 
@@ -30,7 +37,9 @@ function Get-HeimdalWindowsPolicy {
     [CmdletBinding()]
     param (
         [int]$Id,
-        [string]$Name
+        [string]$Name,
+        [int]$pageSize,
+        [int]$pageNumber
     )
     try {
         Write-Verbose "Connecting to Heimdal Security API..."
@@ -51,7 +60,14 @@ function Get-HeimdalWindowsPolicy {
         write-Verbose "API Endpoint: $endpoint"
 
         # Make the API call
-        $response = Invoke-RestMethod -Uri $endpoint -Method Get -Headers $headers -ErrorAction Stop
+        $invokeParams = @{
+            Uri     = $endpoint
+            Headers = $headers
+        }
+        if ($pageSize)   { $invokeParams.Add("pageSize", $pageSize) }
+        if ($pageNumber) { $invokeParams.Add("pageNumber", $pageNumber) }
+
+        $response = Invoke-HeimdalApiRequest @invokeParams
 
         if ($response) {
             Write-Verbose "Successfully retrieved group policies from Heimdal"
