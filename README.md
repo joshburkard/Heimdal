@@ -31,13 +31,14 @@ The module supports PowerShell 5.1 and 7.x.
    ```
 
 2. Import the module:
+
    ```powershell
    Import-Module Heimdal
    ```
 
 ## 🚀 Quick Start
 
-### Connect to MECM
+### Connect to Heimdal Security API
 
 ```powershell
 # Basic connection using current user credentials
@@ -71,7 +72,7 @@ other functions will be described in the [Help](./Help/README.md) folder
 
 The module follows this pattern:
 
-```
+```text
 Heimdal/
 ├── Code/                                    # Source code
 │   ├── function-template.ps1                # Template for new functions
