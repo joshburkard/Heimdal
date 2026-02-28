@@ -1,19 +1,21 @@
-# Get-HeimdalDevice
+# Get-HeimdalActiveClient
 
 ## SYNOPSIS
 
-Retrieves devices from Heimdal Security API
+Retrieves active clients from Heimdal Security API
 
 ## DESCRIPTION
 
-This function retrieves a list of all available devices (active clients) from the Heimdal Security API.
+This function retrieves a list of all available active clients from the Heimdal Security API.
 The API endpoint is /activeclients and requires customerId, date range, and supports pagination.
+
+This API endpoint retrieves information about all the active clients of a customer (id, hostname, IP Address, Agent version, OS, current Group Policy, Last seen, active modules, status).
 
 ## PARAMETERS
 
 ### Name
 
-Filter devices by hostname
+Filter active clients by hostname
 
 - Type: String
 - Required: false
@@ -22,7 +24,7 @@ Filter devices by hostname
 
 ### ClientInfoId
 
-Filter devices by clientInfoId
+Filter active clients by ClientInfoId
 
 - Type: String
 - Required: false
@@ -72,5 +74,5 @@ The end date for filtering
 ### Example 1
 
 ```powershell
-Get-HeimdalDevice -ApiKey "YOUR_API_KEY" -CustomerId "123456" -BaseUrl "https://dashboard.heimdalsecurity.com/api/heimdalapi"
+Get-HeimdalActiveClient -BaseUrl "https://dashboard.heimdalsecurity.com/api/heimdalapi"
 ```

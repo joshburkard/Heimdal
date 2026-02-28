@@ -50,7 +50,7 @@ Once connected with `Connect-Heimdal`, other module functions can use the stored
 
 ```powershell
 # Get device information
-Get-HeimdalDevice -Name "COMPUTER01"
+Get-HeimdalActiveClient -Name "COMPUTER01"
 ```
 
 other functions will be described in the [Help](./Help/README.md) folder
@@ -58,7 +58,8 @@ other functions will be described in the [Help](./Help/README.md) folder
 ## 📚 Available Functions
 
 - [`Connect-Heimdal`](./Help/Connect-Heimdal.md) - Connects to the Heimdal API and save the connection settings for other functions
-- [`Get-HeimdalDevice`](./Help/Get-HeimdalDevice.md) - Get Devices from the Heimdal API
+- [`Get-HeimdalActiveClient`](./Help/Get-HeimdalActiveClient.md) - Retrieves active clients from Heimdal Security API
+- [`Get-HeimdalDeviceInfo`](./Help/Get-HeimdalDeviceInfo.md) - Retrieves device information from Heimdal Security API
 - [`Get-HeimdalLinuxPolicy`](./Help/Get-HeimdalLinuxPolicy.md) - Retrieves Linux policies from Heimdal Security API
 - [`Get-HeimdalOSUpdate`](./Help/Get-HeimdalOSUpdate.md) - Retrieves OS updates from Heimdal Security API
 - [`Get-HeimdalWindowsPolicy`](./Help/Get-HeimdalWindowsPolicy.md) - Retrieves all group policies from Heimdal Security API
@@ -76,7 +77,8 @@ Heimdal/
 │   │   └── Invoke-HeimdalApiRequest.ps1     # Core API interaction function
 │   └── Public/                              # Exported module functions
 │       ├── Connect-Heimdal.ps1
-│       ├── Get-HeimdalDevice.ps1
+│       ├── Get-HeimdalActiveClient.ps1
+│       ├── Get-HeimdalDeviceInfo.ps1
 │       ├── Get-HeimdalCollection.ps1
 │       └── ...                              # Other public functions
 │

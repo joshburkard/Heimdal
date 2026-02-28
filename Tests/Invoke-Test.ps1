@@ -928,7 +928,7 @@ try {
                 }
                 if ($sectionIdx -lt 0) { return $FileLines }
 
-                # Find table separator (|---|---|...)
+                # Find table separator (| --- | --- | ...)
                 $separatorIdx = -1
                 for ($i = $sectionIdx + 1; $i -lt $FileLines.Count; $i++) {
                     if ($FileLines[$i] -match '^\|\s*[-:]+\s*\|') {

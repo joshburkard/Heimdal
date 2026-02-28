@@ -1,5 +1,5 @@
-﻿# Functional Tests for Get-HeimdalDevice
-# Tests the Get-HeimdalDevice function behavior and return values
+﻿# Functional Tests for Get-HeimdalActiveClient
+# Tests the Get-HeimdalActiveClient function behavior and return values
 
 BeforeAll {
     # Load test declarations
@@ -12,44 +12,44 @@ BeforeAll {
 
     # Get test data for this function
     $ConnectData = $script:TestData['Connect-Heimdal']['Valid']
-    $script:TestGetDeviceData = $script:TestData['Get-HeimdalDevice']
+    $script:TestGetActiveClientData = $script:TestData['Get-HeimdalActiveClient']
 
     Connect-Heimdal @ConnectData
 }
 
-Describe "Get-HeimdalDevice Function Tests" -Tag "Integration", "Connection" {
+Describe "Get-HeimdalActiveClient Function Tests" -Tag "Integration", "Connection" {
     Context "Test Data Validation" {
 
         It "Should have test data defined in declarations.ps1" {
             # Assert
-            $script:TestGetDeviceData | Should -Not -BeNullOrEmpty
-            $script:TestData.ContainsKey('Get-HeimdalDevice') | Should -Be $true
+            $script:TestGetActiveClientData | Should -Not -BeNullOrEmpty
+            $script:TestData.ContainsKey('Get-HeimdalActiveClient') | Should -Be $true
         }
 
         It "Should have required test data parameter sets" {
             # Assert
-            $script:TestGetDeviceData.ContainsKey('ByName') | Should -Be $true
-            $script:TestGetDeviceData.ContainsKey('ByWrongName') | Should -Be $true
-            $script:TestGetDeviceData.ContainsKey('ByDate') | Should -Be $true
-            $script:TestGetDeviceData.ContainsKey('ByAllPage') | Should -Be $true
-            $script:TestGetDeviceData.ContainsKey('ByPageSize') | Should -Be $true
+            $script:TestGetActiveClientData.ContainsKey('ByName') | Should -Be $true
+            $script:TestGetActiveClientData.ContainsKey('ByWrongName') | Should -Be $true
+            $script:TestGetActiveClientData.ContainsKey('ByDate') | Should -Be $true
+            $script:TestGetActiveClientData.ContainsKey('ByAllPage') | Should -Be $true
+            $script:TestGetActiveClientData.ContainsKey('ByPageSize') | Should -Be $true
         }
 
         It "Should output test data for verification" {
             # Output test data
-            Write-Host "`n=== Test Data for Get-HeimdalDevice ===" -ForegroundColor Cyan
+            Write-Host "`n=== Test Data for Get-HeimdalActiveClient ===" -ForegroundColor Cyan
             Write-Host "ByName:" -ForegroundColor Yellow
-            Write-Host "  Name: $($script:TestGetDeviceData.ByName.Name)" -ForegroundColor White
+            Write-Host "  Name: $($script:TestGetActiveClientData.ByName.Name)" -ForegroundColor White
             Write-Host "ByWrongName:" -ForegroundColor Yellow
-            Write-Host "  Name: $($script:TestGetDeviceData.ByWrongName.Name)" -ForegroundColor White
+            Write-Host "  Name: $($script:TestGetActiveClientData.ByWrongName.Name)" -ForegroundColor White
             Write-Host "ByDate:" -ForegroundColor Yellow
-            Write-Host "  StartDate: $($script:TestGetDeviceData.ByDate.StartDate)" -ForegroundColor White
-            Write-Host "  EndDate: $($script:TestGetDeviceData.ByDate.EndDate)" -ForegroundColor White
+            Write-Host "  StartDate: $($script:TestGetActiveClientData.ByDate.StartDate)" -ForegroundColor White
+            Write-Host "  EndDate: $($script:TestGetActiveClientData.ByDate.EndDate)" -ForegroundColor White
             Write-Host "ByAllPage:" -ForegroundColor Yellow
-            Write-Host "  GetAllPages: $($script:TestGetDeviceData.ByAllPage.GetAllPages)" -ForegroundColor White
+            Write-Host "  GetAllPages: $($script:TestGetActiveClientData.ByAllPage.GetAllPages)" -ForegroundColor White
             Write-Host "ByPageSize:" -ForegroundColor Yellow
-            Write-Host "  pageSize: $($script:TestGetDeviceData.ByPageSize.pageSize)" -ForegroundColor White
-            Write-Host "  pageNumber: $($script:TestGetDeviceData.ByPageSize.pageNumber)" -ForegroundColor White
+            Write-Host "  pageSize: $($script:TestGetActiveClientData.ByPageSize.pageSize)" -ForegroundColor White
+            Write-Host "  pageNumber: $($script:TestGetActiveClientData.ByPageSize.pageNumber)" -ForegroundColor White
             Write-Host "============================================================`n" -ForegroundColor Cyan
 
             # This test always passes, it's just for output
@@ -64,21 +64,21 @@ Describe "Get-HeimdalDevice Function Tests" -Tag "Integration", "Connection" {
             $script:HDSession = $null
 
             # Test that the function throws
-            { Get-HeimdalDevice } | Should -Throw
+            { Get-HeimdalActiveClient } | Should -Throw
 
             # Restore connection
             $script:HDSession = $backupConnection
         }
     }
 
-    Context "Get-HeimdalDevice Functionality" {
+    Context "Get-HeimdalActiveClient Functionality" {
 
         It "Should retrieve device by name successfully" {
             # Arrange
-            $params = $script:TestGetDeviceData.ByName
+            $params = $script:TestGetActiveClientData.ByName
 
             # Act
-            $result = Get-HeimdalDevice @params
+            $result = Get-HeimdalActiveClient @params
 
             # Assert
             $result | Should -Not -BeNullOrEmpty
@@ -87,10 +87,10 @@ Describe "Get-HeimdalDevice Function Tests" -Tag "Integration", "Connection" {
 
         It "Should return empty result for non-existent device name" {
             # Arrange
-            $params = $script:TestGetDeviceData.ByWrongName
+            $params = $script:TestGetActiveClientData.ByWrongName
 
             # Act
-            $result = Get-HeimdalDevice @params
+            $result = Get-HeimdalActiveClient @params
 
             # Assert
             $result | Should -BeNullOrEmpty
@@ -98,10 +98,10 @@ Describe "Get-HeimdalDevice Function Tests" -Tag "Integration", "Connection" {
 
         It "Should retrieve device by clientInfoId successfully" {
             # Arrange
-            $params = $script:TestGetDeviceData.ByClientInfoId
+            $params = $script:TestGetActiveClientData.ByClientInfoId
 
             # Act
-            $result = Get-HeimdalDevice @params
+            $result = Get-HeimdalActiveClient @params
 
             # Assert
             $result | Should -Not -BeNullOrEmpty
@@ -110,12 +110,12 @@ Describe "Get-HeimdalDevice Function Tests" -Tag "Integration", "Connection" {
 
         It "Should retrieve devices within date range successfully" {
             # Arrange
-            $params = $script:TestGetDeviceData.ByDate
+            $params = $script:TestGetActiveClientData.ByDate
             $StartDate = $params.StartDate
             $EndDate = $params.EndDate
 
             # Act
-            $result = Get-HeimdalDevice @params
+            $result = Get-HeimdalActiveClient @params
 
             # Assert
             $result | Should -Not -BeNullOrEmpty
@@ -134,7 +134,7 @@ Describe "Get-HeimdalDevice Function Tests" -Tag "Integration", "Connection" {
             # Arrange
 
             # Act
-            $result = Get-HeimdalDevice -GetAllPages
+            $result = Get-HeimdalActiveClient
 
             # Assert
             $result | Should -Not -BeNullOrEmpty
@@ -143,10 +143,10 @@ Describe "Get-HeimdalDevice Function Tests" -Tag "Integration", "Connection" {
 
         It "Should retrieve devices with specified page size and number" {
             # Arrange
-            $params = $script:TestGetDeviceData.ByPageSize
+            $params = $script:TestGetActiveClientData.ByPageSize
 
             # Act
-            $result = Get-HeimdalDevice @params
+            $result = Get-HeimdalActiveClient @params
 
             # Assert
             $result | Should -Not -BeNullOrEmpty

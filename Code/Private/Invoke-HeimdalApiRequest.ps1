@@ -107,7 +107,12 @@ function Invoke-HeimdalApiRequest {
             do {
                 try {
                     Write-Verbose "Attempting API request to $pageUri (Attempt $($attempt+1)/$MaxRetries)"
-                    $response = Invoke-RestMethod -Uri $pageUri -Method $Method -Headers $Headers -Body $Body -ErrorAction Stop
+                    try {
+                        $response = Invoke-RestMethod -Uri $pageUri -Method $Method -Headers $Headers -Body $Body -ErrorAction Stop
+                    } catch {
+                        Write-Verbose "Error during API request: $($_.Exception.Message)"
+                        $response = $null
+                    }
                     try { $script:HDSession.LastRequest = Get-Date } catch {}
                     break
                 } catch {
@@ -133,6 +138,10 @@ function Invoke-HeimdalApiRequest {
             if ($response -and $response.items) {
                 $allItems += $response.items
                 $totalCount = $response.totalCount
+            }
+            else {
+                $response = $null
+                $totalCount = 0
             }
             $autoPageNumber++
         } while ($totalCount -gt $allItems.Count)

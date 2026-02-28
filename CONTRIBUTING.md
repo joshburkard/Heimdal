@@ -5,18 +5,18 @@ Thank you for your interest in contributing to the Heimdal Security PowerShell m
 ## 📋 Table of Contents
 
 - [Getting Started](#getting-started)
-- [Branching Strategy](#branching-strategy)
-- [Project Structure](#project-structure)
-- [Development Workflow](#development-workflow)
-- [Creating or Modifying Functions](#creating-or-modifying-functions)
-- [Testing](#testing)
-- [Building the Module](#building-the-module)
-- [Documentation](#documentation)
-- [Pull Request Process](#pull-request-process)
-- [Branch Protection](#branch-protection)
-- [Best Practices](#best-practices)
+- [Branching Strategy](#-branching-strategy)
+- [Project Structure](#-project-structure)
+- [Development Workflow](#-development-workflow)
+- [Creating or Modifying Functions](#-creating-or-modifying-functions)
+- [Testing](#-testing)
+- [Building the Module](#️-building-the-module)
+- [Documentation](#-documentation)
+- [Pull Request Process](#-pull-request-process)
+- [Branch Protection](#-branch-protection)
+- [Best Practices](#-best-practices)
 
-## � Getting Started
+## Getting Started
 
 ### For External Contributors (Recommended)
 
@@ -104,11 +104,11 @@ graph LR
 
 **Key principle**: All changes must go through pull requests, even for core contributors!
 
-## �📁 Project Structure
+## 📁 Project Structure
 
 The project follows a well-organized structure to separate source code, tests, builds, and documentation:
 
-```
+```text
 Heimdal/
 ├── Code/                                    # Source code
 │   ├── function-template.ps1                # Template for new functions
@@ -116,7 +116,8 @@ Heimdal/
 │   │   └── Invoke-HeimdalApiRequest.ps1     # Core API interaction function
 │   └── Public/                              # Exported module functions
 │       ├── Connect-Heimdal.ps1
-│       ├── Get-HeimdalDevice.ps1
+│       ├── Get-HeimdalActiveClient.ps1
+│       ├── Get-HeimdalDeviceInfo.ps1
 │       ├── Get-HeimdalCollection.ps1
 │       └── ...                              # Other public functions
 │
@@ -135,7 +136,7 @@ Heimdal/
 │
 ├── Help/                                    # Generated markdown documentation
 │   ├── Connect-Heimdal.md
-│   ├── Get-HeimdalDevice.md
+│   ├── Get-HeimdalActiveClient.md
 │   └── ...                                  # One file per function
 │
 ├── Heimdal/                                 # Built module output
@@ -212,7 +213,7 @@ code .\Tests\declarations.ps1
 Invoke-Pester -Script .\Tests\Functions.Tests.ps1
 
 # Run tests for your specific function
-.\Tests\Invoke-Test.ps1 -FunctionName "Get-HeimdalDevice" -IncludeStructuralTests
+.\Tests\Invoke-Test.ps1 -FunctionName "Get-HeimdalActiveClient" -IncludeStructuralTests
 ```
 
 ### 6. Build the Module
@@ -223,6 +224,7 @@ Invoke-Pester -Script .\Tests\Functions.Tests.ps1
 ```
 
 The build script will:
+
 - Prompt for version number (follows Semantic Versioning)
 - Prompt for description of changes
 - Run structural tests (MUST PASS to continue)
@@ -289,7 +291,7 @@ code .\Code\Public\Get-HeimdalNewFeature.ps1
 Every function must include:
 
 1. **Approved PowerShell Verb**: Use `Get-Verb` to see approved verbs
-2. **Module Prefix**: All functions must use `Heimdal` prefix (e.g., `Get-HeimdalDevice`)
+2. **Module Prefix**: All functions must use `Heimdal` prefix (e.g., `Get-HeimdalActiveClient`)
 3. **CmdletBinding Attribute**: `[CmdletBinding()]`
 4. **Comment-Based Help** with:
    - `.SYNOPSIS` - Brief description
@@ -306,7 +308,7 @@ Every function must include:
 ### Example Function Structure
 
 ```powershell
-function Get-HeimdalDevice {
+function Get-HeimdalActiveClient {
     <#
     .SYNOPSIS
             Retrieves devices from Heimdal Security API
@@ -321,23 +323,8 @@ function Get-HeimdalDevice {
         .PARAMETER ClientInfoId
             Filter devices by clientInfoId
 
-        .PARAMETER StartDate
-            The start date for filtering
-
-        .PARAMETER EndDate
-            The end date for filtering
-
-        .PARAMETER pageSize
-            Number of results per page (default: 1000)
-
-        .PARAMETER pageNumber
-            Page number to retrieve (default: 1)
-
-        .PARAMETER GetAllPages
-            Switch to indicate whether to retrieve all pages of results
-
         .EXAMPLE
-            Get-HeimdalDevice -ApiKey "YOUR_API_KEY" -CustomerId "123456" -BaseUrl "https://dashboard.heimdalsecurity.com/api/heimdalapi" -GetAllPages
+            Get-HeimdalActiveClient -Name "Test-123"
 
         .OUTPUTS
             Returns an array of device objects from Heimdal
@@ -400,6 +387,7 @@ Invoke-Pester -Script .\Tests\Functions.Tests.ps1
 ```
 
 #### 2. Functional Tests (OPTIONAL but recommended)
+
 - **Files**: `Tests/Test-*.Tests.ps1` (one per function)
 - **Purpose**: Tests actual function behavior against Heimdal Security environment
 - **When**: Runs at end of build (if `declarations.ps1` is configured)
@@ -410,13 +398,14 @@ Invoke-Pester -Script .\Tests\Functions.Tests.ps1
 .\Tests\Invoke-Test.ps1
 
 # Run tests for specific function
-.\Tests\Invoke-Test.ps1 -FunctionName "Get-HeimdalDevice"
+.\Tests\Invoke-Test.ps1 -FunctionName "Get-HeimdalActiveClient"
 
 # Run with structural tests included
-.\Tests\Invoke-Test.ps1 -FunctionName "Get-HeimdalCollection" -IncludeStructuralTests
+.\Tests\Invoke-Test.ps1 -FunctionName "Get-HeimdalActiveClient" -IncludeStructuralTests
 ```
 
 #### 3. Module Tests (INFORMATIONAL)
+
 - **File**: `Tests/Module.Tests.ps1`
 - **Purpose**: Validates the built module manifest and structure
 - **When**: Runs after successful build
@@ -424,8 +413,9 @@ Invoke-Pester -Script .\Tests\Functions.Tests.ps1
 ### Creating Tests for New Functions
 
 1. **Copy an existing test file** as a template:
+
    ```powershell
-   Copy-Item .\Tests\Test-Get-HeimdalDevice.Tests.ps1 `
+   Copy-Item .\Tests\Test-Get-HeimdalActiveClient.Tests.ps1 `
              .\Tests\Test-Get-HeimdalNewFeature.Tests.ps1
    ```
 
@@ -805,7 +795,7 @@ Use clear, descriptive commit messages:
 
 **Good examples:**
 - `Add Get-HeimdalNewFeature function`
-- `Fix error handling in Get-HeimdalDevice`
+- `Fix error handling in Get-HeimdalActiveClient`
 - `Update documentation for Connect-Heimdal`
 - `Refactor Invoke-HeimdalApi for better error messages`
 - `Test: Add integration tests for Get-HeimdalCollection`
@@ -813,6 +803,7 @@ Use clear, descriptive commit messages:
 
 **Commit message format:**
 ```
+
 Type: Brief description (50 chars or less)
 
 Optional detailed explanation of what changed and why.
