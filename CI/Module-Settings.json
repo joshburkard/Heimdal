@@ -1,9 +1,9 @@
 {
   "ModuleName": "Heimdal",
-  "ModuleVersion": "0.1.6",
+  "ModuleVersion": "0.1.7",
   "ModuleDescription": "managing Heimdal Security",
   "ModuleAuthor": "Josua Burkard",
   "ModuleCompany": "Josua Burkard",
   "ModulePrefix": "Heimdal",
-  "LastChange": "spliting Get-HeimdalDevice to Get-HeimdalActiveClient and Get-HeimdalDeviceInfo"
+  "LastChange": "Get-HeimdalDeviceNotification"
 }
