@@ -8,3 +8,4 @@ Version | Change | Date | Author
 0.1.5 | Get-HeimdalWindowsThirdParty | 2026-02-25 | Josua Burkard
 0.1.6 | spliting Get-HeimdalDevice to Get-HeimdalActiveClient and Get-HeimdalDeviceInfo | 2026-02-28 | Josua Burkard
 0.1.7 | Get-HeimdalDeviceNotification | 2026-02-28 | Josua Burkard
+0.1.8 | Get-HeimdalDeviceRiskScore | 2026-02-28 | Josua Burkard

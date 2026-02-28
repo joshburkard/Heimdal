@@ -10,6 +10,7 @@ This documentation provides details on the functions available in the Public Pow
 | [Get-HeimdalActiveClient](./Get-HeimdalActiveClient.md) | Retrieves active clients from Heimdal Security API |
 | [Get-HeimdalDeviceInfo](./Get-HeimdalDeviceInfo.md) | Retrieves device information from Heimdal Security API |
 | [Get-HeimdalDeviceNotification](./Get-HeimdalDeviceNotification.md) | Retrieves device notifications from Heimdal Security API |
+| [Get-HeimdalDeviceRiskScore](./Get-HeimdalDeviceRiskScore.md) | Retrieves device risk scores from Heimdal Security API |
 | [Get-HeimdalLinuxPolicy](./Get-HeimdalLinuxPolicy.md) | Retrieves Linux policies from Heimdal Security API |
 | [Get-HeimdalWindowsOSUpdate](./Get-HeimdalWindowsOSUpdate.md) | Retrieves OS updates from Heimdal Security API |
 | [Get-HeimdalWindowsPolicy](./Get-HeimdalWindowsPolicy.md) | Retrieves all group policies from Heimdal Security API |

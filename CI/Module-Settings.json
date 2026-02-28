@@ -1,9 +1,9 @@
 {
   "ModuleName": "Heimdal",
-  "ModuleVersion": "0.1.7",
+  "ModuleVersion": "0.1.8",
   "ModuleDescription": "managing Heimdal Security",
   "ModuleAuthor": "Josua Burkard",
   "ModuleCompany": "Josua Burkard",
   "ModulePrefix": "Heimdal",
-  "LastChange": "Get-HeimdalDeviceNotification"
+  "LastChange": "Get-HeimdalDeviceRiskScore"
 }

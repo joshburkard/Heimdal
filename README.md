@@ -60,6 +60,8 @@ other functions will be described in the [Help](./Help/README.md) folder
 - [`Connect-Heimdal`](./Help/Connect-Heimdal.md) - Connects to the Heimdal API and save the connection settings for other functions
 - [`Get-HeimdalActiveClient`](./Help/Get-HeimdalActiveClient.md) - Retrieves active clients from Heimdal Security API
 - [`Get-HeimdalDeviceInfo`](./Help/Get-HeimdalDeviceInfo.md) - Retrieves device information from Heimdal Security API
+- [`Get-HeimdalDeviceNotification`](./Help/Get-HeimdalDeviceNotification.md) - Retrieves device notifications from Heimdal Security API
+- [`Get-HeimdalDeviceRiskScore`](./Help/Get-HeimdalDeviceRiskScore.md) - Retrieves device risk scores from Heimdal Security API
 - [`Get-HeimdalLinuxPolicy`](./Help/Get-HeimdalLinuxPolicy.md) - Retrieves Linux policies from Heimdal Security API
 - [`Get-HeimdalOSUpdate`](./Help/Get-HeimdalOSUpdate.md) - Retrieves OS updates from Heimdal Security API
 - [`Get-HeimdalWindowsPolicy`](./Help/Get-HeimdalWindowsPolicy.md) - Retrieves all group policies from Heimdal Security API
