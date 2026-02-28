@@ -52,9 +52,9 @@ $script:TestData = @{
     }
 
     # ========================================================================
-    # Get-HeimdalDevice
+    # Get-HeimdalActiveClient
     # ========================================================================
-    'Get-HeimdalDevice' = @{
+    'Get-HeimdalActiveClient' = @{
         ByName = @{
             Name = "SampleDeviceName"
         }
@@ -75,6 +75,51 @@ $script:TestData = @{
             pageSize = 10
             pageNumber = 1
         }
+    }
+
+
+    # ========================================================================
+    # Get-HeimdalDeviceInfo
+    # ========================================================================
+    'Get-HeimdalDeviceInfo' = @{
+        ByDeviceId = @{ DeviceId = 'SampleDeviceId' }
+        ByWrongDeviceId = @{ DeviceId = 'WrongDeviceId' }
+    }
+
+    # ========================================================================
+    # Get-HeimdalDeviceNotification
+    # ========================================================================
+    'Get-HeimdalDeviceNotification' = @{
+        ByDeviceId = @{ DeviceId = 'SampleDeviceId' }
+        ByWrongDeviceId = @{ DeviceId = 'WrongDeviceId' }
+    }
+
+    # ========================================================================
+    # Get-HeimdalDeviceRiskScore
+    # ========================================================================
+    'Get-HeimdalDeviceRiskScore' = @{
+        ByDeviceId = @{ DeviceId = 'SampleDeviceId' }
+        ByWrongDeviceId = @{ DeviceId = 'WrongDeviceId' }
+    }
+
+    # ========================================================================
+    # Get-HeimdalLinuxPolicy
+    # ========================================================================
+    'Get-HeimdalLinuxPolicy' = @{
+        ByName = @{ Name = 'SAMPLE_LINUX_POLICY' }
+        ById = @{ Id = 222222 }
+        ByWrongName = @{ Name = 'NonExistentLinuxPolicyName' }
+        ByWrongId = @{ Id = 888888 }
+    }
+
+    # ========================================================================
+    # Get-HeimdalWindowsThirdParty
+    # ========================================================================
+    'Get-HeimdalWindowsThirdParty' = @{
+        ByGroupPolicyId = @{ GroupPolicyId = 333333 }
+        ByClientInfoId = @{ ClientInfoId = 'SampleClientInfoId' }
+        ByWrongGroupPolicyId = @{ GroupPolicyId = 999999 }
+        ByWrongClientInfoId = @{ ClientInfoId = 'WrongClientInfoId' }
     }
 
     # ========================================================================
