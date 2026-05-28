@@ -2,13 +2,14 @@
 
 This file tracks the test coverage status for all functions in the Heimdal module.
 
-**Last Updated:** 2026-02-28 14:15:23
+**Last Updated:** 2026-03-23 12:51:42
 
 ## PowerShell 7.x
 
 | Function | Status | Passed | Failed | Skipped | Coverage % | Duration |
 | -------- | ------ | ------ | ------ | ------- | ---------- | -------- |
 | Connect-Heimdal | 🟢 Passed | 8 | 0 | 0 | 100% | 2.62s |
+| Disconnect-Heimdal | 🟢 Passed | 2 | 0 | 0 | 100% | 1.16s |
 | Get-HeimdalActiveClient | 🟢 Passed | 10 | 0 | 0 | 95.83% | 2.29s |
 | Get-HeimdalDeviceInfo | 🟢 Passed | 6 | 0 | 0 | 93.1% | 916ms |
 | Get-HeimdalDeviceNotification | 🟢 Passed | 6 | 0 | 0 | 93.1% | 970ms |
@@ -23,6 +24,7 @@ This file tracks the test coverage status for all functions in the Heimdal modul
 | Function | Status | Passed | Failed | Skipped | Coverage % | Duration |
 | -------- | ------ | ------ | ------ | ------- | ---------- | -------- |
 | Connect-Heimdal | 🟢 Passed | 8 | 0 | 0 | 100% | 5.97s |
+| Disconnect-Heimdal | 🟢 Passed | 2 | 0 | 0 | 100% | 7.37s |
 | Get-HeimdalActiveClient | 🟢 Passed | 10 | 0 | 0 | 95.83% | 5.2s |
 | Get-HeimdalDeviceInfo | 🟢 Passed | 6 | 0 | 0 | 93.1% | 1.93s |
 | Get-HeimdalDeviceNotification | 🟢 Passed | 6 | 0 | 0 | 93.1% | 2.2s |

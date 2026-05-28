@@ -35,6 +35,7 @@ function Get-HeimdalActiveClient {
     param (
         [string]$Name,
         [string]$ClientInfoId,
+
         [Parameter(Mandatory = $false)]
         [datetime]$StartDate,
 
@@ -53,18 +54,28 @@ function Get-HeimdalActiveClient {
 
         $endpoint = "$($script:HDSession.ApiURL)/2.0/activeclients?customerId=$($script:HDSession.CustomerID)"
 
+        $filters = @()
+
         if ($ClientInfoId) {
-            $endpoint += "&clientInfoId=$ClientInfoId"
+            $filters += "clientInfoId=$ClientInfoId"
+        }
+
+        if ([boolean]$Name) {
+            $filters += "hostname=$Name"
         }
 
         # Set default dates if not provided
         if ([boolean]$StartDate) {
             $StartDateString = (Get-Date $StartDate).ToUniversalTime().ToString("yyyy-MM-ddT00:00:00")
-            $endpoint += "&startDate=$StartDateString"
+            $filters += "startDate=$StartDateString"
         }
         if ([boolean]$EndDate) {
             $EndDateString = (Get-Date $EndDate).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")
-            $endpoint += "&endDate=$EndDateString"
+            $filters += "endDate=$EndDateString"
+        }
+
+        if ($filters.Count -gt 0) {
+            $endpoint += "&" + ($filters -join "&")
         }
 
         Write-Verbose "Date range: $StartDate to $EndDate"

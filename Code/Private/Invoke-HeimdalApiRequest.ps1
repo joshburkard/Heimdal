@@ -69,7 +69,7 @@ function Invoke-HeimdalApiRequest {
         do {
             try {
                 Write-Verbose "Attempting API request to $uriWithPaging (Attempt $($attempt+1)/$MaxRetries)"
-                $response = Invoke-RestMethod -Uri $uriWithPaging -Method $Method -Headers $Headers -Body $Body -ErrorAction Stop
+                $response = Invoke-RestMethod -Uri $uriWithPaging -Method $Method -Headers $Headers -Body Body$ -ErrorAction Stop
                 try { $script:HDSession.LastRequest = Get-Date } catch {}
                 return $response
             } catch {
